@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include "msg_linked_set.h"
 
+#define pretty_print_bool(x) x?"true":"false"
+
 int main() {
 
 
@@ -23,6 +25,7 @@ int main() {
     }
 
     printf("\n%d, ", msg_linked_set_add(root_ptr, 1));
+    printf("\n%s", pretty_print_bool(msg_linked_set_contains(root, 1)));
     printf("\n\n%d, %d", msg_linked_set_add(root_ptr, 1), msg_linked_set_add(root_ptr, 1));
 
     printf("\n\nFree: %d\n", msg_linked_set_free(root_ptr));
