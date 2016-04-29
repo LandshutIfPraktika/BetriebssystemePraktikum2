@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <zconf.h>
 #include "mq.h"
-#include "msg_linked_list.h"
+#include "msg_linked_set.h"
 
 int main() {
     int msq_id = msgget(MQ_KEY, IPC_PRIVATE | IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
@@ -33,7 +33,7 @@ int main() {
 
         if (pid_client == -1) {
             child_count--;
-        } else if (msg_linked_list_add(root_ptr, pid_client)) {
+        } else if (msg_linked_set_add(root_ptr, pid_client)) {
             child_count++;
             printf("New Client: %d\n", pid_client);
         }
@@ -50,7 +50,7 @@ int main() {
         perror("msgctl");
         exit(EXIT_FAILURE);
     }
-    msg_linked_list_free(root_ptr);
+    msg_linked_set_free(root_ptr);
     printf("Server done, shutting down.\n");
     return EXIT_SUCCESS;
 }

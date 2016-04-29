@@ -4,9 +4,9 @@
 
 #include <zconf.h>
 #include <stdlib.h>
-#include "msg_linked_list.h"
+#include "msg_linked_set.h"
 
-int msg_linked_list_add(struct list_node **root, pid_t pid) {
+int msg_linked_set_add(struct list_node **root, pid_t pid) {
     struct list_node **list = root;
     while (*list != NULL) {
         if ((*list)->pid == pid) {
@@ -23,7 +23,7 @@ int msg_linked_list_add(struct list_node **root, pid_t pid) {
     return 1;
 }
 
-int msg_linked_list_remove(struct list_node **root, pid_t pid) {
+int msg_linked_set_remove(struct list_node **root, pid_t pid) {
     struct list_node **list = root;
     while (*list != NULL) {
         if ((*list)->pid == pid) {
@@ -38,7 +38,7 @@ int msg_linked_list_remove(struct list_node **root, pid_t pid) {
     return 0;
 }
 
-int msg_linked_list_size(struct list_node *list) {
+int msg_linked_set_size(struct list_node *list) {
     int i = 0;
     while (list != NULL) {
         list = list->next;
@@ -47,9 +47,19 @@ int msg_linked_list_size(struct list_node *list) {
     return i;
 }
 
-int msg_linked_list_free(struct list_node **root) {
+int msg_linked_set_contains(struct list_node *list, pid_t pid){
+    while (list != NULL){
+        if (list->pid == pid){
+            return 1;
+        }
+        list = list->next;
+    }
+    return 0;
+}
+
+int msg_linked_set_free(struct list_node **root) {
     if (*root != NULL) {
-        int result = msg_linked_list_free(&(*root)->next);
+        int result = msg_linked_set_free(&(*root)->next);
         free(*root);
         *root = NULL;
         return result + 1;
